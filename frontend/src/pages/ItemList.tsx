@@ -13,7 +13,7 @@ function ItemList({ items, isLoading, error }: ItemListProps) {
         style={{
           fontSize: "18px",
           fontWeight: "bold",
-          marginTop:"20px"
+          marginTop: "20px",
         }}
       >
         Items
@@ -26,20 +26,28 @@ function ItemList({ items, isLoading, error }: ItemListProps) {
       {!isLoading && !error && items.length === 0 && <p>No items found.</p>}
 
       {!isLoading && !error && items.length > 0 && (
-        <ul style={{ paddingLeft: 20, display:"flex", flexDirection: "column" , gap: "20px"}}>
+        <ul
+          style={{
+            paddingLeft: 20,
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+          }}
+        >
           {items.map((item) => (
-            <li key={item.id} style={{display:"flex", flexDirection: "column", gap: "5px"}}>
+            <li
+              key={item.id}
+              style={{ display: "flex", flexDirection: "column", gap: "5px" }}
+            >
               <span>
                 - Product Name : <strong>{item.name}</strong>
               </span>
 
-              {item.description && (
-                <p>- Description : {item.description}</p>
-              )}
+              {item.description && <p>- Description : {item.description}</p>}
 
-              <small>
-                - Created at: {new Date(item.createdAt).toLocaleString()}
-              </small>
+              <span>
+                - <small>Created at: {new Date(item.createdAt).toLocaleString()}</small>
+              </span>
             </li>
           ))}
         </ul>

@@ -1,8 +1,9 @@
-import { Item } from './item.interface';
+import { Repository } from 'typeorm';
+import { Item } from './item.entity';
 import { CreateItemDto } from './create-item.dto';
 export declare class ItemsService {
-    private items;
-    private nextId;
-    findAll(): Item[];
-    create(createItemDto: CreateItemDto): Item;
+    private readonly itemsRepository;
+    constructor(itemsRepository: Repository<Item>);
+    findAll(): Promise<Item[]>;
+    create(createItemDto: CreateItemDto): Promise<Item>;
 }

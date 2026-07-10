@@ -1,41 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { Item } from './item.interface';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Item } from './item.entity';
 import { CreateItemDto } from './create-item.dto';
 
 @Injectable()
 export class ItemsService {
-  private items: Item[] = [
-    {
-      id: '1',
-      name: 'Laptop',
-      description: 'A portable computer',
-      createdAt: new Date(),
-    },
-    {
-      id: '2',
-      name: 'Mouse',
-      description: 'A wireless mouse',
-      createdAt: new Date(),
-    },
-  ];
+  constructor(
+    @InjectRepository(Item)
+    private readonly itemsRepository: Repository<Item>,
+  ) {}
 
-  private nextId = 3;
-
-  findAll(): Item[] {
-    return this.items;
+  findAll(): Promise<Item[]> {
+    return this.itemsRepository.find({ order: { createdAt: 'DESC' } });
   }
 
-  create(createItemDto: CreateItemDto): Item {
-    const newItem: Item = {
-      id: String(this.nextId),
-      name: createItemDto.name,
-      description: createItemDto.description,
-      createdAt: new Date(),
-    };
-
-    this.items.push(newItem);
-    this.nextId++;
-
-    return newItem;
+  create(createItemDto: CreateItemDto): Promise<Item> {
+    const item = this.itemsRepository.create(createItemDto);
+    return this.itemsRepository.save(item);
   }
 }

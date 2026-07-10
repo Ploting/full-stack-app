@@ -1,11 +1,36 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ItemsModule } from './items/items.module';
 
 @Module({
-  imports: [ItemsModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        const port = Number(config.getOrThrow<string>('DB_PORT'));
+
+        if (!Number.isInteger(port)) {
+          throw new Error('DB_PORT in .env must be an integer');
+        }
+
+        return {
+          type: 'mysql',
+          host: config.getOrThrow<string>('DB_HOST'),
+          port,
+          username: config.getOrThrow<string>('DB_USER'),
+          password: config.getOrThrow<string>('DB_PASSWORD'),
+          database: config.getOrThrow<string>('DB_NAME'),
+          autoLoadEntities: true,
+          synchronize: config.getOrThrow<string>('DB_SYNC') === 'true',
+        };
+      },
+    }),
+    ItemsModule,
+  ],
 })
 export class AppModule {}

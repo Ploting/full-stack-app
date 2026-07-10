@@ -33,14 +33,14 @@ __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Array)
+    __metadata("design:returntype", Promise)
 ], ItemsController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_item_dto_1.CreateItemDto]),
-    __metadata("design:returntype", Object)
+    __metadata("design:returntype", Promise)
 ], ItemsController.prototype, "create", null);
 exports.ItemsController = ItemsController = __decorate([
     (0, common_1.Controller)('items'),
