@@ -1,4 +1,4 @@
-import type { Item } from '../types/item';
+import type { Item } from "../types/item";
 
 type ItemListProps = {
   items: Item[];
@@ -9,30 +9,36 @@ type ItemListProps = {
 function ItemList({ items, isLoading, error }: ItemListProps) {
   return (
     <div>
-      <div>
-        <h2>Items</h2>
+      <div
+        style={{
+          fontSize: "18px",
+          fontWeight: "bold",
+          marginTop:"20px"
+        }}
+      >
+        Items
       </div>
 
       {isLoading && <p>Loading items...</p>}
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {!isLoading && !error && items.length === 0 && (
-        <p>No items found.</p>
-      )}
+      {!isLoading && !error && items.length === 0 && <p>No items found.</p>}
 
       {!isLoading && !error && items.length > 0 && (
-        <ul style={{ paddingLeft: 20 }}>
+        <ul style={{ paddingLeft: 20, display:"flex", flexDirection: "column" , gap: "20px"}}>
           {items.map((item) => (
-            <li key={item.id} style={{ marginBottom: 12 }}>
-              <strong>{item.name}</strong>
+            <li key={item.id} style={{display:"flex", flexDirection: "column", gap: "5px"}}>
+              <span>
+                - Product Name : <strong>{item.name}</strong>
+              </span>
 
               {item.description && (
-                <p style={{ margin: '4px 0' }}>{item.description}</p>
+                <p>- Description : {item.description}</p>
               )}
 
               <small>
-                Created at: {new Date(item.createdAt).toLocaleString()}
+                - Created at: {new Date(item.createdAt).toLocaleString()}
               </small>
             </li>
           ))}
